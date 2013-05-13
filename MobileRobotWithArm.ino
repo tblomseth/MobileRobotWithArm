@@ -21,7 +21,7 @@ int armMicroSwitchPort = PORT_8;
 Me_BaseShield baseShield;
 Me_ServoDriver servoDriver( PORT_2 ); //can ONLY be PORT_1,PORT_2
 Me_InfraredReceiver infraredReceiver; 
-//Me_MotorDriver motorDriver1( PORT_1 );
+Me_MotorDriver motorDriver1( PORT_1 );
 Me_BaseShieldMotorDriver baseShieldMotorDriver;// use M1 and M2 ports on BaseShield
 // initialize the stepper library on pins 8 through 11:
 MakeblockStepper armStepper( stepsPerRevolution, baseShield, PORT_3 );
