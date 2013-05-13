@@ -21,25 +21,25 @@ int armMicroSwitchPort = PORT_8;
 Me_BaseShield baseShield;
 Me_ServoDriver servoDriver( PORT_2 ); //can ONLY be PORT_1,PORT_2
 Me_InfraredReceiver infraredReceiver; 
-Me_MotorDriver motorDriver1( PORT_1 );
+//Me_MotorDriver motorDriver1( PORT_1 );
 Me_BaseShieldMotorDriver baseShieldMotorDriver;// use M1 and M2 ports on BaseShield
 // initialize the stepper library on pins 8 through 11:
 MakeblockStepper armStepper( stepsPerRevolution, baseShield, PORT_3 );
 
 void setup() {
-  //baseShield.begin();
+  baseShield.begin();
   // initialize serial communication with computer:
   Serial.begin( 9600 );
   // initialize servo driver:
-  //servoDriver.Servos_begin();
+  servoDriver.Servos_begin();
   // initialize Infrared Receiver:
   infraredReceiver.begin();
   // Init arm motor driver
   //motorDriver1.begin();
   // initialize BaseShield Motor Driver:
-  //baseShieldMotorDriver.begin();
+  baseShieldMotorDriver.begin();
   // Set stepper speed
-  //armStepper.setSpeed( stepperSpeed );
+  armStepper.setSpeed( stepperSpeed );
 
   /*
   posStartS1 = posCurrentS1 = servoDriver.readServo1();
