@@ -221,34 +221,45 @@ void initializeArm() {
 void moveArmAndTiltGripper() {
   int steps = 800;
   int inclinationDiff = 90;
-  int stepsLeft = steps;
-  int servoStartPos = 45;
-  int servoPos = servoStartPos;
-  int idLeft = inclinationDiff;
-  int stepsPerWalk = ceil( (float)steps / (float)inclinationDiff );
-  Serial.println( "stepsPerWalk: " );
-  Serial.println( stepsPerWalk );
-  int lastWalkSteps = steps % stepsPerWalk;
-  Serial.println( "lastWalkSteps:" );
-  Serial.println( lastWalkSteps );
-  for ( ; idLeft >= 0; idLeft--) {
+  stepsLeft = steps;
+  int servoStartPos = 45,
+  servoPos = servoStartPos,
+  int idLeft = inclinationDiff,
+  
+  // Calculate no of steps per short walk
+  int stepsPerShortWalk = floor( (float)steps / (float)inclinationDiff );
+  Serial.println( "stepsPerShortWalk: " );
+  Serial.println( stepsPerShortWalk );
+
+  // Calculate no long and short walks respectively
+  int numberOfLongWalks = steps - ( inclinationDiff * stepsPerShortWalk );
+  Serial.println( "numberOfLongWalks:" );
+  Serial.println( numberOfLongWalks );
+  int numberOfShortWalks = inclinationDiff - numberOfLongWalks;
+  Serial.println( "numberOfShortWalks:" );
+  Serial.println( numberOfShortWalks );
+
+  int iterations = 0;
+  for ( ; idLeft > 0; idLeft--) {
     // Move arm
-    if ( idLeft > 1 ) {
-      armStepper.step( stepsPerWalk );
-      stepsLeft -= stepsPerWalk;
-    } 
-    else {
-      armStepper.step( lastWalkSteps );
-      stepsLeft -= lastWalkSteps;
+    if ( idLeft > inclinationDiff - numberOfLongWalks) {
+      armStepper.step( stepsPerShortWalk + 1 );
+      stepsLeft -= stepsPerShortWalk + 1 ;
+    } else {
+      armStepper.step( stepsPerShortWalk );
+      stepsLeft -= stepsPerShortWalk;
     }
     Serial.println( "Steps left: " );
     Serial.println( stepsLeft );
+
     // Tilt gripper
     servoPos++;
-    // servoDriver.writeServo1( servoPos );
+    servoDriver.writeServo1( servoPos );
     Serial.println( "Servo position: " );
     Serial.println( servoPos );
-    delay( 1 );
+      
+    // Wait some
+    delay( 100 );
   }  
 }
 
