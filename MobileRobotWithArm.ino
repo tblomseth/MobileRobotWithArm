@@ -35,7 +35,7 @@ void setup() {
   // initialize Infrared Receiver:
   infraredReceiver.begin();
   // Init arm motor driver
-  //motorDriver1.begin();
+  motorDriver1.begin();
   // initialize BaseShield Motor Driver:
   baseShieldMotorDriver.begin();
   // Set stepper speed
@@ -221,10 +221,10 @@ void initializeArm() {
 void moveArmAndTiltGripper() {
   int steps = 800;
   int inclinationDiff = 90;
-  stepsLeft = steps;
-  int servoStartPos = 45,
-  servoPos = servoStartPos,
-  int idLeft = inclinationDiff,
+  int stepsLeft = steps;
+  int servoStartPos = 45;
+  int servoPos = servoStartPos;
+  int idLeft = inclinationDiff;
   
   // Calculate no of steps per short walk
   int stepsPerShortWalk = floor( (float)steps / (float)inclinationDiff );
