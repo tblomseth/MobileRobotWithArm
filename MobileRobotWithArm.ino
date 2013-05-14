@@ -238,7 +238,7 @@ void moveArmAndTiltGripper( int gripperStartAngle, int tiltDifference, int armSt
   Serial.println( numberOfShortWalks );
   int iterations = 0;
   for ( ; tiltLeft > 0; tiltLeft--) {
-      console.log(++iterations + ')----------');
+      Serial.println(++iterations + ')----------');
       
     // Move arm
       if ( tiltLeft > numberOfShortWalks ) {
