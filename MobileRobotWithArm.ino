@@ -218,7 +218,7 @@ void initializeArm() {
   }
 }
 
-void moveArmAndTiltGripper( gripperStartAngle, tiltDifference, armSteps ) {
+void moveArmAndTiltGripper( int gripperStartAngle, int tiltDifference, int armSteps ) {
   if ( armSteps == 0 || tiltDifference == 0 ) return;  
   int armStepsLeft = abs( armSteps );
   int stepDirection = armSteps / abs( armSteps );
