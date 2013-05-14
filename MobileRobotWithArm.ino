@@ -218,49 +218,48 @@ void initializeArm() {
   }
 }
 
-void moveArmAndTiltGripper() {
-  int steps = 800;
-  int inclinationDiff = 90;
-  int stepsLeft = steps;
-  int servoStartPos = 45;
-  int servoPos = servoStartPos;
-  int idLeft = inclinationDiff;
-  
-  // Calculate no of steps per short walk
-  int stepsPerShortWalk = floor( (float)steps / (float)inclinationDiff );
+function moveArmAndTiltGripper( gripperStartAngle, tiltDifference, armSteps ) {
+  if ( armSteps == 0 || tiltDifference == 0 ) return;  
+  int armStepsLeft = abs( armSteps );
+  int stepDirection = armSteps / abs( armSteps );
+  int gripperAngle = gripperStartAngle;
+  int tiltLeft = abs ( tiltDifference );
+  int tiltDirection = tiltDifference / abs( tiltDifference );
+  int stepsPerShortWalk = floor( armStepsLeft / tiltLeft );
   Serial.println( "stepsPerShortWalk: " );
   Serial.println( stepsPerShortWalk );
 
-  // Calculate no long and short walks respectively
-  int numberOfLongWalks = steps - ( inclinationDiff * stepsPerShortWalk );
+  int numberOfLongWalks = armStepsLeft - ( tiltLeft * stepsPerShortWalk );
   Serial.println( "numberOfLongWalks:" );
   Serial.println( numberOfLongWalks );
-  int numberOfShortWalks = inclinationDiff - numberOfLongWalks;
+
+  int numberOfShortWalks = tiltLeft - numberOfLongWalks;
   Serial.println( "numberOfShortWalks:" );
   Serial.println( numberOfShortWalks );
-
   int iterations = 0;
-  for ( ; idLeft > 0; idLeft--) {
-    // Move arm
-    if ( idLeft > inclinationDiff - numberOfLongWalks) {
-      armStepper.step( stepsPerShortWalk + 1 );
-      stepsLeft -= stepsPerShortWalk + 1 ;
-    } else {
-      armStepper.step( stepsPerShortWalk );
-      stepsLeft -= stepsPerShortWalk;
-    }
-    Serial.println( "Steps left: " );
-    Serial.println( stepsLeft );
-
-    // Tilt gripper
-    servoPos++;
-    servoDriver.writeServo1( servoPos );
-    Serial.println( "Servo position: " );
-    Serial.println( servoPos );
+  for ( ; tiltLeft > 0; tiltLeft--) {
+      console.log(++iterations + ')----------');
       
+    // Move arm
+      if ( tiltLeft > numberOfShortWalks ) {
+          armStepper.step( stepDirection * ( stepsPerShortWalk + 1 ) );
+          armStepsLeft -= stepsPerShortWalk + 1 ;
+      } else {
+          armStepper.step( stepDirection * stepsPerShortWalk );
+          armStepsLeft -= stepsPerShortWalk;
+      }
+
+    Serial.println( "Steps left: " );
+    Serial.println( armStepsLeft );
+    // Tilt gripper
+    gripperAngle += tiltDirection;
+    servoDriver.writeServo1( gripperAngle );
+    Serial.println( "Gripper angle: " );
+    Serial.println( gripperAngle );
+    
     // Wait some
     delay( 100 );
-  }  
+  }
 }
 
 
