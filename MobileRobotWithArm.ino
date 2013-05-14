@@ -59,7 +59,7 @@ void loop()
     {
     case IR_TEST_BUTTON: 
       //readPositions();
-      moveArmAndTiltGripper();
+      moveArmAndTiltGripper( 45, 90, -800 );
       break;
     case IR_RETURN_BUTTON: 
       resetServos();
